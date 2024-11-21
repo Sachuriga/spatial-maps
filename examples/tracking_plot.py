@@ -159,7 +159,7 @@ def plot_head_direction_rate(spike_times, ang_bins, rate_in_ang, projection='pol
     return ax
 
 
-def plot_ratemap(x, y, t, spike_times, box_size=[1.0, 1.0], bin_size=0.02,
+def plot_ratemap(x, y, t, spike_times, box_size=1.0, bin_size=0.02,
                  vmin=0, ax=None, smoothing=.05,
                  origin='upper', cmap='viridis'):
     """
