@@ -33,6 +33,7 @@ def _adjust_bin_size(box_size, bin_size=None, bin_count=None):
 def _make_bins(box_size, bin_size):
     xbins = np.arange(0, box_size[0] + bin_size[0], bin_size[0])
     ybins = np.arange(0, box_size[1] + bin_size[1], bin_size[1])
+    print("bins zie" + str(xbins) )
     return xbins, ybins
 
 
@@ -76,7 +77,7 @@ def interpolate_nan_2D(array, method="nearest"):
 
 class SpatialMap:
     def __init__(
-        self, smoothing=0.05, box_size=[1.0, 1.0], bin_size=0.02, bin_count=50
+        self, smoothing=0.1, box_size=[1.0, 1.0], bin_size=0.05, bin_count=None
     ):
         """
         Parameters
@@ -99,6 +100,7 @@ class SpatialMap:
 
     def spike_map(self, x, y, t, spike_times, mask_zero_occupancy=True, **kwargs):
         spmap = _spike_map(x, y, t, spike_times, self.xbins, self.ybins)
+        
         spmap = (
             smooth_map(spmap, self.bin_size, self.smoothing, **kwargs)
             if self.smoothing
@@ -126,10 +128,10 @@ class SpatialMap:
         y,
         t,
         spike_times,
-        mask_zero_occupancy=True,
+        mask_zero_occupancy=False,
         interpolate_invalid=False,
         **kwargs
-    ):
+        ):
         """Calculate rate map as spike_map / occupancy_map
         Parameters
         ----------
@@ -147,6 +149,7 @@ class SpatialMap:
         spike_map = self.spike_map(
             x, y, t, spike_times, mask_zero_occupancy=mask_zero_occupancy, **kwargs
         )
+
         # to avoid infinity (x/0) we set zero occupancy to nan
         occupancy_map = self.occupancy_map(x, y, t, mask_zero_occupancy=True, **kwargs)
         rate_map = spike_map / occupancy_map

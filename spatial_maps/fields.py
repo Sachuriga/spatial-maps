@@ -51,7 +51,7 @@ def sort_fields_by_rate(rate_map, fields, func=None):
     rate_means = ndimage.labeled_comprehension(
         rate_map, fields, indx, func, np.float64, 0)
     sort = np.argsort(rate_means)[::-1]
-
+    print(fields)
     # new rate map with fields > min_size, sorted
     sorted_fields = np.zeros_like(fields)
     for i in range(indx.max() + 1):
