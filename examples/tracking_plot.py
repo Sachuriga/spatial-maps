@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import math
 from scipy.ndimage.measurements import center_of_mass
-
+import spatial_maps.maps as mapp
 
 def plot_path(x, y, t, box_size, spike_times=None,
               color='grey', alpha=0.5, origin='upper',
@@ -159,8 +159,8 @@ def plot_head_direction_rate(spike_times, ang_bins, rate_in_ang, projection='pol
     return ax
 
 
-def plot_ratemap(x, y, t, spike_times, bin_size=0.05, box_size=1,
-                 box_size=1, vmin=0, ax=None, smoothing=.05,
+def plot_ratemap(x, y, t, spike_times, box_size=[1.0, 1.0], bin_size=0.02,
+                 vmin=0, ax=None, smoothing=.05,
                  origin='upper', cmap='viridis'):
     """
 
@@ -184,9 +184,9 @@ def plot_ratemap(x, y, t, spike_times, bin_size=0.05, box_size=1,
         fig = plt.figure()
         ax = fig.add_subplot(111, xlim=[0, 1], ylim=[0, 1], aspect=1)
 
-    map = SpatialMap(
-        x, y, t, spike_times, bin_size=bin_size, box_size=box_size)
-    rate_map = map.rate_map(smoothing)
+    maps = mapp.SpatialMap(
+        x, y, t, spike_times, box_size=box_size, bin_size=bin_size)
+    rate_map = maps.rate_map(smoothing)
     ax.imshow(rate_map, interpolation='none', origin=origin,
               extent=(0, 1, 0, 1), vmin=vmin, cmap=cmap)
     ax.set_title('%.2f Hz' % np.nanmax(rate_map))
@@ -194,7 +194,7 @@ def plot_ratemap(x, y, t, spike_times, bin_size=0.05, box_size=1,
     return ax
 
 
-def plot_occupancy(x, y, t, bin_size=0.05, box_size=1, box_size=1,
+def plot_occupancy(x, y, t, bin_size=0.05, box_size=1,
                   vmin=0, ax=None, convolve=True,
                   origin='upper', cmap='jet'):
     """
@@ -219,7 +219,7 @@ def plot_occupancy(x, y, t, bin_size=0.05, box_size=1, box_size=1,
         fig = plt.figure()
         ax = fig.add_subplot(111, xlim=[0, 1], ylim=[0, 1], aspect=1)
 
-    occ_map = occupancy_map(x, y, t, bin_size=bin_size, box_size=box_size,
+    occ_map = mapp.occupancy_map(x, y, t, bin_size=bin_size, 
                              box_size=box_size, convolve=convolve)
     cax = ax.imshow(occ_map, interpolation='none', origin=origin,
                    extent=(0, 1, 0, 1), vmin=vmin, cmap=cmap, aspect='auto')

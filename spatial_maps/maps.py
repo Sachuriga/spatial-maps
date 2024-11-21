@@ -76,7 +76,7 @@ def interpolate_nan_2D(array, method="nearest"):
 
 class SpatialMap:
     def __init__(
-        self, smoothing=0.05, box_size=[1.0, 1.0], bin_size=0.02, bin_count=None
+        self, smoothing=0.05, box_size=1.0, bin_size=0.02, bin_count=None
     ):
         """
         Parameters
