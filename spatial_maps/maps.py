@@ -26,7 +26,7 @@ def _adjust_bin_size(box_size, bin_size=None, bin_count=None):
             box_size[1] / int(box_size[1] / bin_size[1]),
         ]
     )
-
+    print(box_size)
     return box_size, bin_size
 
 
@@ -76,7 +76,7 @@ def interpolate_nan_2D(array, method="nearest"):
 
 class SpatialMap:
     def __init__(
-        self, smoothing=0.05, box_size=1.0, bin_size=0.02, bin_count=None
+        self, smoothing=0.05, box_size=[1.0, 1.0], bin_size=0.02, bin_count=50
     ):
         """
         Parameters

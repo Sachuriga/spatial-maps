@@ -159,7 +159,7 @@ def plot_head_direction_rate(spike_times, ang_bins, rate_in_ang, projection='pol
     return ax
 
 
-def plot_ratemap(x, y, t, spike_times, box_size=1.0, bin_size=0.02,
+def plot_ratemap(x, y, t, spike_times, box_size=[1.0, 1.0], bin_size=0.02,
                  vmin=0, ax=None, smoothing=.05,
                  origin='upper', cmap='viridis'):
     """
@@ -183,10 +183,9 @@ def plot_ratemap(x, y, t, spike_times, box_size=1.0, bin_size=0.02,
     if ax is None:
         fig = plt.figure()
         ax = fig.add_subplot(111, xlim=[0, 1], ylim=[0, 1], aspect=1)
-
-    maps = mapp.SpatialMap(
-        x, y, t, spike_times, box_size=box_size, bin_size=bin_size)
-    rate_map = maps.rate_map(smoothing)
+    print("here")
+    maps = mapp.SpatialMap(box_size=box_size, bin_size=bin_size)
+    rate_map = maps.rate_map(x, y, t, spike_times)
     ax.imshow(rate_map, interpolation='none', origin=origin,
               extent=(0, 1, 0, 1), vmin=vmin, cmap=cmap)
     ax.set_title('%.2f Hz' % np.nanmax(rate_map))
