@@ -159,7 +159,7 @@ def plot_head_direction_rate(spike_times, ang_bins, rate_in_ang, projection='pol
     return ax
 
 
-def plot_ratemap(x, y, t, spike_times, box_size=[1.0, 1.0], bin_size=0.02,
+def plot_ratemap(x, y, t, spike_times, box_size=[1.0, 1.0], bin_size=0.05,
                  vmin=0, ax=None, smoothing=.05,
                  origin='upper', cmap='viridis'):
     """
@@ -184,8 +184,9 @@ def plot_ratemap(x, y, t, spike_times, box_size=[1.0, 1.0], bin_size=0.02,
         fig = plt.figure()
         ax = fig.add_subplot(111, xlim=[0, 1], ylim=[0, 1], aspect=1)
     print("here")
-    maps = mapp.SpatialMap(box_size=box_size, bin_size=bin_size)
+    maps = mapp.SpatialMap(box_size=box_size, bin_size=bin_size,smoothing=smoothing)
     rate_map = maps.rate_map(x, y, t, spike_times)
+    plt.figure(figsize=(6,6))
     ax.imshow(rate_map, interpolation='none', origin=origin,
               extent=(0, 1, 0, 1), vmin=vmin, cmap=cmap)
     ax.set_title('%.2f Hz' % np.nanmax(rate_map))
@@ -220,7 +221,7 @@ def plot_occupancy(x, y, t, bin_size=0.05, box_size=1,
 
     occ_map = mapp.occupancy_map(x, y, t, bin_size=bin_size, 
                              box_size=box_size, convolve=convolve)
-    cax = ax.imshow(occ_map, interpolation='none', origin=origin,
+    cax = ax.imshow(occ_map.T, interpolation='none', origin=origin,
                    extent=(0, 1, 0, 1), vmin=vmin, cmap=cmap, aspect='auto')
     # ax.set_title('%.2f s' % np.nanmax(occ_map))
     ax.grid(False)

@@ -151,8 +151,10 @@ class SpatialMap:
         )
 
         # to avoid infinity (x/0) we set zero occupancy to nan
-        occupancy_map = self.occupancy_map(x, y, t, mask_zero_occupancy=True, **kwargs)
+        occupancy_map = self.occupancy_map(x, y, t, mask_zero_occupancy=mask_zero_occupancy, **kwargs)
         rate_map = spike_map / occupancy_map
+        threshold = rate_map * 0.1
+        rate_map[rate_map < threshold] = 0
         if not mask_zero_occupancy:
             rate_map[np.isnan(rate_map)] = 0
         elif interpolate_invalid:

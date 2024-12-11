@@ -90,7 +90,7 @@ def remove_fields_by_area(fields, minimum_field_area):
     return fields
 
 
-def separate_fields_by_laplace(rate_map, threshold=0, minimum_field_area=None):
+def separate_fields_by_laplace(rate_map, threshold=0.1, minimum_field_area=None):
     """Separates fields using the laplacian to identify fields separated by
     a negative second derivative.
     Parameters
@@ -246,7 +246,7 @@ def which_field(x, y, fields, box_size):
     dx = box_size[0]/sx
     dy = box_size[1]/sy
     x_bins = dx + np.arange(0, box_size[0] + dx, dx)
-    y_bins = dy + np.arange(0, box_size[1] + dx, dy)
+    y_bins = dy + np.arange(0, box_size[1] + dy, dy)
     # x_bins = np.arange(0, box_size[0] + dx, dx)
     # y_bins = np.arange(0, box_size[1] + dx, dy)
     ix = np.digitize(x, x_bins)
